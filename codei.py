@@ -73,10 +73,8 @@ def update_local_settings(settings, overwrite):
         current_settings = json.load(current_f)
     if overwrite:
         final_settings = merge_settings(settings, current_settings)
-        # final_settings = {**current_settings, **settings}
     else:
         final_settings = merge_settings(current_settings, settings)
-        # final_settings = {**settings, **current_settings}
     with open(SETTINGS_PATH, 'w') as output_f:
         json.dump(final_settings, output_f, sort_keys=True, indent=4)
 
