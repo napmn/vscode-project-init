@@ -53,14 +53,30 @@ def create_local_settings(settings):
         json.dump(settings, settings_f, sort_keys=True, indent=4)
 
 
+def merge_settings(a, b):
+    """
+    Deep merge of settings dicts.
+    Conflicting keys keeps value of dict 'a'.
+    """
+    final = {**a}
+    for key, val in b.items():
+        if key in a.keys():
+            if isinstance(b[key], dict) and isinstance(a[key], dict):
+                final[key] = merge_settings(a[key], b[key])
+        else:
+            final[key] = val
+    return final
+
 def update_local_settings(settings, overwrite):
     print('Updating existing settings.json file...')
     with open(SETTINGS_PATH, 'r') as current_f:
         current_settings = json.load(current_f)
     if overwrite:
-        final_settings = {**current_settings, **settings}
+        final_settings = merge_settings(settings, current_settings)
+        # final_settings = {**current_settings, **settings}
     else:
-        final_settings = {**settings, **current_settings}
+        final_settings = merge_settings(current_settings, settings)
+        # final_settings = {**settings, **current_settings}
     with open(SETTINGS_PATH, 'w') as output_f:
         json.dump(final_settings, output_f, sort_keys=True, indent=4)
 
