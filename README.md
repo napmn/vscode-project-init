@@ -11,7 +11,8 @@ current working directory with predefined settings from the config file.
 ## Setup
 
 - Clone repo anywhere you want and create your configuration JSON files
-in *configs* directory.
+in *configs* directory (or later use create command of **codei** to create
+config from local settings).
 - Make codei.py executable: `chmod +x codei.py`.
 - Create symlink so the utility can be used globally:
 `ln -s {PROJECT_ABSOLUTE_PATH}/codei.py /usr/local/bin/codei`
@@ -19,26 +20,34 @@ in *configs* directory.
 
 ## Usage
 
-When you have your configs ready you can list available configs using
-**-l / --list** argument:
+You can list available configs using
+***list*** command:
 
 ```bash
-$ codei --list
+$ codei list
 Available settings: python, js, ...
 ```
 
-Initialize local directory with predefined settings
-(or update existing settings):
+Initialize local directory with predefined settings (or update existing settings)
+using ***init*** command
+:
 
 ```bash
-$ codei js
+$ codei init js
 Creating new settings.json file... / Updating existing settings.json file...
 ```
 
-If optional argument **-o / --overwrite** is present, common properties in
-settings are overwriten by new values. If not, settings are merged
-in depth and values of conflicting keys are not changed.
+Create settings.json config from local settings.json using ***create*** command:
 
-## TODO
+```bash
+$ codei create ts
+Saving local settings to available configs under name: ts
+```
 
-- implement settings config creation from local settings
+Optional argument **-o / --overwrite** can be supplied for ***init*** and
+***create*** command.
+
+- when supplied for ***init***, common properties in settings are overwriten by
+new values
+- when supplied for ***create***, if there is config under the same name it will
+be completly overwriten by the contents of local settings.
